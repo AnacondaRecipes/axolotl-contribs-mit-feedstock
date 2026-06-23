@@ -1,0 +1,52 @@
+{% set name = "axolotl-contribs-mit" %}
+{% set version = "0.0.6" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/a/{{ name }}/axolotl_contribs_mit-{{ version }}.tar.gz
+  sha256: f48a63f5878269cd85e5a78b5f3bb44aabe9ffd0143664c91c5841d8ecefdf26
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+
+requirements:
+  host:
+    - python
+    - pip
+    - setuptools
+    - wheel
+  run:
+    - python
+    - pytorch >=2.7.1
+
+test:
+  imports:
+    - axolotl.contribs.mit
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/axolotl-ai-cloud/axolotl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: MIT-licensed contrib modules (optimizers) for Axolotl
+  description: |
+    MIT-licensed contributed modules for the Axolotl LLM fine-tuning framework,
+    packaging the Dion and Muon optimizer implementations as the
+    axolotl.contribs.mit namespace.
+  doc_url: https://docs.axolotl.ai
+  dev_url: https://github.com/axolotl-ai-cloud/axolotl
+
+extra:
+  skip-lints:
+    # pytorch is a CBC-pinned runtime-only dep (pure-Python; not linked at build)
+    - cbc_dep_in_run_missing_from_host
+  recipe-maintainers:
+    - xkong-anaconda
